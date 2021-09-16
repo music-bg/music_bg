@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "music_bg"
+version = "0.1.0"
+description = ""
+authors = ["Pavel Kirilin <win10@list.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+dbus-python = "^1.2.16"
+PyGObject = "^3.40.1"
+loguru = "^0.5.3"
+requests = "^2.26.0"
+pydantic = "^1.8.2"
+toml = "^0.10.2"
+entrypoints = "^0.3"
+Pillow-SIMD = "^7.0.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.9.2"
+mypy = "^0.910"
+isort = "^5.9.3"
+yesqa = "^1.2.3"
+pytest = "^6.2.5"
+wemake-python-styleguide = "^0.15.3"
+black = "^21.9b0"
+pre-commit = "^2.15.0"
+autoflake = "^1.4"
+types-requests = "^2.25.6"
+types-toml = "^0.1.5"
+
+[tool.poetry.scripts]
+music_bg = "music_bg.__main__:main"
+
+[tool.poetry.plugins.mbg_processors]
+fit = "music_bg.img_processors.fit:fit"
+noop = "music_bg.img_processors.noop:noop"
+resize = "music_bg.img_processors.resize:resize"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+allow_subclassing_any = true
+allow_untyped_calls = true
+pretty = true
+show_error_codes = true
+implicit_reexport = true
+allow_untyped_decorators = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

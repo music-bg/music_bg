@@ -1,0 +1,30 @@
+name: Release package
+
+on:
+  workflow_run:
+    workflows: [ "Testing package" ]
+    branches: [ master ]
+    types:
+      - completed
+jobs:
+  release:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: Install python dependencies 👨🏻‍💻
+      run: |
+        sudo apt-get install -y build-essential libdbus-glib-1-dev libgirepository1.0-dev
+        pip install -U pip
+        pip install poetry
+        poetry install
+      env:
+        POETRY_VIRTUALENVS_CREATE: false
+    - name: Release package
+      env:
+        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+      run: poetry publish --build
