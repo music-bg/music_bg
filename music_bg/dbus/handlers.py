@@ -23,7 +23,6 @@ def guard_metadata(context: Context, player_args: Dict[str, Any]) -> Optional[Me
     """
     status = player_args.get("PlaybackStatus")
     raw_meta = player_args.get("Metadata")
-    print(f"#### {raw_meta}")
     if raw_meta is None:
         return None
     metadata = Metadata(**raw_meta)
