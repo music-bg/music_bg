@@ -13,12 +13,12 @@ from music_bg.config import Config
 class Metadata(BaseModel):
     """Music metadata."""
 
-    track_id: Optional[str] = Field(alias="mpris:track_id")
-    art_url: Optional[str] = Field(alias="mpris:art_url")
+    track_id: Optional[str] = Field(alias="mpris:trackid")
+    art_url: Optional[str] = Field(alias="mpris:artUrl")
     album: Optional[str] = Field(alias="xesam:album")
     artists: Optional[List[str]] = Field(alias="xesam:artist")
     title: Optional[str] = Field(alias="xesam:title")
-    track_number: Optional[int] = Field(alias="xesam:track_number")
+    track_number: Optional[int] = Field(alias="xesam:trackNumber")
     url: Optional[str] = Field(alias="xesam:url")
 
 
