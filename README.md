@@ -2,15 +2,14 @@
 
 
 <div align="center">
-<img src="images/logo.png" width=700>
+<img src="https://raw.githubusercontent.com/music-bg/music_bg/master/images/logo.png" width=700>
 </div>
 
 <p align="center">
-  <a href="https://github.com/music-bg/music_bg/wiki">Wiki</a> •
-  <a href="#abstract">Abstract</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#screenshots">Screenshots</a> •
-  <a href="#usage">Usage</a>
+    <a href="https://github.com/music-bg/music_bg/wiki">Wiki</a> •
+    <a href="#abstract">Abstract</a> •
+    <a href="#screenshots">Screenshots</a> •
+    <a href="#installation">Installation</a>
 </p>
 
 <div align="center">
@@ -25,12 +24,23 @@ sets it as your wallpapper.
 And the main thing, this project is highly customizable.
 You can install plugins and write your own configurations.
 
+<div align="center">
+<h1 id="screenshots">Screenshots</h1>
+</div>
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/music-bg/music_bg/master/images/examples/1.png" width=700>
+</br>
+<img src="https://raw.githubusercontent.com/music-bg/music_bg/master/images/examples/2.png" width=700>
+</br>
+<img src="https://raw.githubusercontent.com/music-bg/music_bg/master/images/examples/3.png" width=700>
+</div>
 
 <div align="center">
 <h1 id="installation">Installation</h1>
 </div>
 
-⚠️ This project require DBUS to be installed. ⚠️
+⚠️ This project requires DBUS to be installed. Currently only linux is supported. ⚠️
 
 To install this project simply run:
 ```bash
@@ -40,37 +50,5 @@ pip install music_bg
 pip install music_bg_extra
 ```
 
-<div align="center">
-<h1 id="screenshots">Screenshots</h1>
-</div>
-
-<div align="center">
-<img src="images/examples/1.png" width=700>
-</br>
-<img src="images/examples/2.png" width=700>
-</br>
-<img src="images/examples/3.png" width=700>
-</div>
-
-
-
-<div align="center">
-<h1 id="usage">Usage</h1>
-</div>
-
-At first you need to generate default config file by runing
-```
-music_bg gen
-```
-
-It will generate config in your home directory with following
-contents:
-```json
-{
-  "blender": [],
-  "set_command": "feh --bg-fill \"{0}\"",
-  "reset_command": "nitrogen --restore",
-  "screen_resolution_command": "xrandr | grep '*' | cut -d' ' -f4 | sort --human-numeric-sort --reverse | head -n 1",
-  "layers": []
-}
-```
+That's it. Now you can read our [wiki](https://github.com/music-bg/music_bg/wiki)
+to set up your music background.
