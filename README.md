@@ -51,4 +51,4 @@ pip install music_bg_extra
 ```
 
 That's it. Now you can read our [wiki](https://github.com/music-bg/music_bg/wiki)
-to set up your music background.
+to set up your own music background.

@@ -130,7 +130,15 @@ class Context:  # noqa: WPS230
         """
         Get dimensions of the biggest screen.
 
-        :return: Tuple[width, height]
+        screen has two fields:
+        * width
+        * height
+
+        You can use it as
+
+        {screen.width} or {screen.height}
+
+        :returns: a Screen object.
         """
         return self.screen
 
@@ -146,7 +154,6 @@ class Context:  # noqa: WPS230
         """
         Get variables mapping.
 
-        :return: [description]
-        :rtype: [type]
+        :return: mapping with variables.
         """
         return {name: var_proc() for name, var_proc in self.variables_providers.items()}
