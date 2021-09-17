@@ -92,5 +92,5 @@ class Config(BaseModel):
 
         ser, _ = self.get_serde_by_extension(extension)
 
-        with open(config_path, "r") as config_io:
-            ser(self, config_io)
+        with open(config_path, "w") as config_io:
+            ser(self.dict(exclude={"log_level"}), config_io)
