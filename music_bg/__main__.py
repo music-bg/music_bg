@@ -19,6 +19,9 @@ def generate_config(file_format: str) -> None:
     :param file_format: format of a file.
     """
     config_path = Path(f"~/.mbg.{file_format}").expanduser()
+    if config_path.exists():
+        print(f"Config {config_path} already exists")
+        return
     Config().save(config_path)
     print(f"Config successfully generated at {config_path}")
 
