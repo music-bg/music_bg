@@ -1,4 +1,3 @@
-import math
 from typing import Union
 
 from PIL.Image import Image
@@ -23,13 +22,13 @@ def fit(  # noqa: WPS210
     width = int(width)
     height = int(height)
 
-    width_factor = math.ceil(width / image.width)
-    height_factor = math.ceil(height / image.height)
+    width_factor = width / image.width
+    height_factor = height / image.height
 
     scale_factor = max(width_factor, height_factor)
 
     resized = image.resize(
-        (image.width * scale_factor, image.height * scale_factor),
+        (int(image.width * scale_factor), int(image.height * scale_factor)),
     )
 
     return resized.crop(

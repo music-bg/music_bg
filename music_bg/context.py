@@ -54,10 +54,11 @@ class Context:  # noqa: WPS230
         self.last_status = ""
         self.screen = Screen()
         self.metdata = Metadata()
+        self.src_image = None
         self.processors_map: Dict[str, Callable[..., Image]] = {}
         self.variables_providers: Dict[str, Callable[..., Any]] = {
-            "screen": self.get_screen_size,
-            "metadata": self.get_metadata,
+            "screen": Context.get_screen_size,
+            "metadata": Context.get_metadata,
         }
         self.reload()
 
@@ -156,4 +157,6 @@ class Context:  # noqa: WPS230
 
         :return: mapping with variables.
         """
-        return {name: var_proc() for name, var_proc in self.variables_providers.items()}
+        return {
+            name: var_proc(self) for name, var_proc in self.variables_providers.items()
+        }

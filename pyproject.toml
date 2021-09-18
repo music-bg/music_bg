@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "music_bg"
-version = "0.1.8"
+version = "0.1.9"
 description = "Dynamic wallpapers with power of mpris2."
 authors = ["Pavel Kirilin <win10@list.ru>"]
 readme = "README.md"
@@ -53,6 +53,8 @@ music_bg = "music_bg.__main__:main"
 fit = "music_bg.img_processors.fit:fit"
 noop = "music_bg.img_processors.noop:noop"
 resize = "music_bg.img_processors.resize:resize"
+load_img = "music_bg.img_processors.load_img:load_img"
+blank_image = "music_bg.img_processors.blank_img:blank_image"
 
 [tool.isort]
 profile = "black"
