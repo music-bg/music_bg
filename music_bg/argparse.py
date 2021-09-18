@@ -1,7 +1,7 @@
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from pathlib import Path
 
-from xdg import xdg_config_home
+from music_bg.utils import xdg_config_home
 
 
 def parse_args() -> Namespace:

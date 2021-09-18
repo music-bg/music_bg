@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "music_bg"
-version = "0.2.0"
+version = "0.2.1"
 description = "Dynamic wallpapers with power of mpris2."
 authors = ["Pavel Kirilin <win10@list.ru>"]
 readme = "README.md"
@@ -31,7 +31,6 @@ pydantic = "^1.8.2"
 toml = "^0.10.2"
 entrypoints = "^0.3"
 Pillow-SIMD = "^7.0.0"
-xdg = "^5.1.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.2"
