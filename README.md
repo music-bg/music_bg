@@ -7,13 +7,12 @@
 
 <p align="center">
     <a href="https://github.com/music-bg/music_bg/wiki">Wiki</a> •
-    <a href="#abstract">Abstract</a> •
-    <a href="#screenshots">Screenshots</a> •
+    <a href="#about">About</a> •
     <a href="#installation">Installation</a>
 </p>
 
 <div align="center">
-<h1 id="abstract">Abstract</h1>
+<h1 id="about">About</h1>
 </div>
 
 This project is a dynamic wallpaper changer.
@@ -23,18 +22,6 @@ sets it as your wallpapper.
 
 And the main thing, this project is highly customizable.
 You can install plugins and write your own configurations.
-
-<div align="center">
-<h1 id="screenshots">Screenshots</h1>
-</div>
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/music-bg/music_bg/master/images/examples/1.png" width=700>
-</br>
-<img src="https://raw.githubusercontent.com/music-bg/music_bg/master/images/examples/2.png" width=700>
-</br>
-<img src="https://raw.githubusercontent.com/music-bg/music_bg/master/images/examples/3.png" width=700>
-</div>
 
 <div align="center">
 <h1 id="installation">Installation</h1>

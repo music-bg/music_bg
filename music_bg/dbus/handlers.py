@@ -1,4 +1,4 @@
-from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Any, Callable, Dict, Optional
 
 import requests
@@ -72,7 +72,6 @@ def player_signal_handler(  # noqa: WPS213, WPS210, C901
         if status != "Playing":
             reset_background(context)
             return
-        bg_path = Path("/tmp/music_bg.png")  # noqa: S108
         logger.debug(f"Requesting {metadata.art_url}")
         response = requests.get(str(metadata.art_url), stream=True)
         if not response.ok:
@@ -86,8 +85,10 @@ def player_signal_handler(  # noqa: WPS213, WPS210, C901
         image = Image.open(response.raw).convert("RGBA")
         processed = process_image(image, context)
         if processed is not None:
-            processed.save(bg_path)
-            set_background(str(bg_path), context)
+            with NamedTemporaryFile(mode="wb", delete=True) as temp_file:
+                processed.save(temp_file, format="png")
+                logger.debug(f"Background saved at {temp_file.name}")
+                set_background(temp_file.name, context)
 
     return _player_signal_handler
 

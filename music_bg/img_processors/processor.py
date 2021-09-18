@@ -1,6 +1,5 @@
 from functools import partial
 from multiprocessing import Pool
-from operator import attrgetter
 from typing import Optional, Tuple, Union
 
 from loguru import logger
@@ -68,10 +67,10 @@ def process_image(  # noqa: WPS210
 
     blender = context.config.blender
     if not blender:
-        blender = list(map(attrgetter("name"), context.config.layers))
+        blender = [layer.name for layer in context.config.layers]
 
     layers = Pool().map(partial(process_layer, image, context), context.config.layers)
-    layers_map = {layer_name: image for layer_name, image in layers}
+    layers_map = dict(layers)
 
     image = Image.new("RGBA", (context.screen.width, context.screen.height))
     for blend_index in blender:

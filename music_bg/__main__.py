@@ -1,9 +1,9 @@
 import inspect
 from importlib import metadata
-from pathlib import Path
 
 from loguru import logger
 from PIL.Image import Image
+from xdg import xdg_config_home
 
 from music_bg.argparse import parse_args
 from music_bg.config import Config
@@ -18,7 +18,8 @@ def generate_config(file_format: str) -> None:
 
     :param file_format: format of a file.
     """
-    config_path = Path(f"~/.mbg.{file_format}").expanduser()
+    config_home = xdg_config_home()
+    config_path = config_home / f".mbg.{file_format}"
     if config_path.exists():
         print(f"Config {config_path} already exists")
         return
