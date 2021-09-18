@@ -68,14 +68,6 @@ def parse_args() -> Namespace:
     )
 
     gen_parser.add_argument(
-        "-f",
-        "--format",
-        default="json",
-        choices=["json", "toml"],
-        help="Config file format.",
-    )
-
-    gen_parser.add_argument(
         "-c",
         "--config",
         help="Path to the configuration file",
