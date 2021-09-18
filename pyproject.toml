@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "music_bg"
-version = "0.1.5"
+version = "0.1.6"
 description = "Dynamic wallpapers with power of mpris2."
 authors = ["Pavel Kirilin <win10@list.ru>"]
 readme = "README.md"
