@@ -899,6 +899,14 @@ python-versions = ">=3.5"
 dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 
 [[package]]
+name = "xdg"
+version = "5.1.1"
+description = "Variables defined by the XDG Base Directory Specification"
+category = "main"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[[package]]
 name = "yesqa"
 version = "1.2.3"
 description = "Automatically remove unnecessary `# noqa` comments."
@@ -913,7 +921,7 @@ tokenize-rt = ">=2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "bb88ca73761de95b3a4f6e72acd840c1e12344f59a04c4e4a5d5c4c9cca90bcb"
+content-hash = "b8ad2353f29f79f1535b40ce5fdaaa092e580a75f88fc7e3eac236e061500095"
 
 [metadata.files]
 astor = [
@@ -1348,6 +1356,10 @@ wemake-python-styleguide = [
 win32-setctime = [
     {file = "win32_setctime-1.0.3-py3-none-any.whl", hash = "sha256:dc925662de0a6eb987f0b01f599c01a8236cb8c62831c22d9cada09ad958243e"},
     {file = "win32_setctime-1.0.3.tar.gz", hash = "sha256:4e88556c32fdf47f64165a2180ba4552f8bb32c1103a2fafd05723a0bd42bd4b"},
+]
+xdg = [
+    {file = "xdg-5.1.1-py3-none-any.whl", hash = "sha256:865a7b56ed1d4cd2fce2ead1eddf97360843619757f473cd90b75f1817ca541d"},
+    {file = "xdg-5.1.1.tar.gz", hash = "sha256:aa619f26ccec6088b2a6018721d4ee86e602099b24644a90a8d3308a25acd06c"},
 ]
 yesqa = [
     {file = "yesqa-1.2.3-py2.py3-none-any.whl", hash = "sha256:bbcc2cf5a869fde8310005239ad470030a158daaf1ab99e8cb00939bf93ab6f9"},

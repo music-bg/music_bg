@@ -12,13 +12,12 @@ from music_bg.dbus.loop import run_loop
 from music_bg.logging import init_logger
 
 
-def generate_config(file_format: str) -> None:
+def generate_config(config_path: Path) -> None:
     """
     Generate default config file.
 
-    :param file_format: format of a file.
+    :param config_path: path to config.
     """
-    config_path = Path(f"~/.mbg.{file_format}").expanduser()
     if config_path.exists():
         print(f"Config {config_path} already exists")
         return
@@ -117,7 +116,7 @@ def main() -> None:
         show_version()
         return
     if args.subparser_name == "gen":
-        generate_config(args.format)
+        generate_config(args.config_path)
         return
     context = Context(args.config_path, args.reload)
     if args.subparser_name == "info":

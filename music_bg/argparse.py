@@ -1,6 +1,8 @@
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from pathlib import Path
 
+from xdg import xdg_config_home
+
 
 def parse_args() -> Namespace:
     """
@@ -16,7 +18,7 @@ def parse_args() -> Namespace:
         "-c",
         "--config",
         help="Path to the configuration file",
-        default=Path("~/.mbg.json").expanduser(),
+        default=xdg_config_home() / ".mbg.json",
         type=Path,
         dest="config_path",
     )
@@ -39,7 +41,7 @@ def parse_args() -> Namespace:
 
     subparsers = parser.add_subparsers(dest="subparser_name")
 
-    config_parser = subparsers.add_parser(
+    gen_parser = subparsers.add_parser(
         "gen",
         help="Generate config",
     )
@@ -65,12 +67,13 @@ def parse_args() -> Namespace:
         dest="show_vars",
     )
 
-    config_parser.add_argument(
-        "-f",
-        "--format",
-        default="json",
-        choices=["json", "toml"],
-        help="Config file format.",
+    gen_parser.add_argument(
+        "-c",
+        "--config",
+        help="Path to the configuration file",
+        default=xdg_config_home() / ".mbg.json",
+        type=Path,
+        dest="config_path",
     )
 
     return parser.parse_args()
