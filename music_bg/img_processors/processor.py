@@ -28,6 +28,7 @@ def process_layer(  # noqa: WPS210
 
     :return: Name of the layer and processed image.
     """
+    image = image.copy()
     for processor in layer.processors:
         processor_func = context.get_processor(processor.name)
         logger.debug(f"Applying {processor.name} on layer {layer.name}")

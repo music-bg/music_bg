@@ -83,6 +83,7 @@ def player_signal_handler(  # noqa: WPS213, WPS210, C901
             context.reload()
 
         image = Image.open(response.raw).convert("RGBA")
+        context.src_image = image.copy()
         processed = process_image(image, context)
         if processed is not None:
             with NamedTemporaryFile(mode="wb", delete=True) as temp_file:
