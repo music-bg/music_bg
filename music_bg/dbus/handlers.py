@@ -26,7 +26,7 @@ def guard_metadata(context: Context, player_args: Dict[str, Any]) -> Optional[Me
     if raw_meta is None:
         return None
     metadata = Metadata(**raw_meta)
-    if (  # noqa: WPS337
+    if (
         str(metadata.track_id) == str(context.metdata.track_id)
         and str(status) == context.last_status
     ):
@@ -39,7 +39,7 @@ def guard_metadata(context: Context, player_args: Dict[str, Any]) -> Optional[Me
     return metadata
 
 
-def player_signal_handler(  # noqa: WPS213, WPS210, C901
+def player_signal_handler(
     context: Context,
 ) -> Callable[..., None]:
     """
@@ -49,7 +49,7 @@ def player_signal_handler(  # noqa: WPS213, WPS210, C901
     :return: dbus listener function.
     """
 
-    def _player_signal_handler(  # noqa: WPS213, WPS210, C901
+    def _player_signal_handler(
         _dbus_interface: str,
         player_args: Dict[str, Any],
         *_args: Any,
@@ -73,7 +73,7 @@ def player_signal_handler(  # noqa: WPS213, WPS210, C901
             reset_background(context)
             return
         logger.debug(f"Requesting {metadata.art_url}")
-        response = requests.get(str(metadata.art_url), stream=True)
+        response = requests.get(str(metadata.art_url), stream=True, timeout=5)
         if not response.ok:
             logger.debug(f"Image response returned status {response.status_code}")
             return
@@ -82,7 +82,7 @@ def player_signal_handler(  # noqa: WPS213, WPS210, C901
         if context.reloadable:
             context.reload()
 
-        image = Image.open(response.raw).convert("RGBA")
+        image = Image.open(response.raw).convert("RGBA")  # type: ignore
         context.src_image = image.copy()
         processed = process_image(image, context)
         if processed is not None:

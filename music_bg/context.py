@@ -1,8 +1,8 @@
 import subprocess
+from importlib.metadata import EntryPoints
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List
 
-import entrypoints
 from loguru import logger
 from PIL.Image import Image
 from pydantic import BaseModel, Field
@@ -13,13 +13,13 @@ from music_bg.config import Config
 class Metadata(BaseModel):
     """Music metadata."""
 
-    track_id: Optional[str] = Field(alias="mpris:trackid")
-    art_url: Optional[str] = Field(alias="mpris:artUrl")
-    album: Optional[str] = Field(alias="xesam:album")
-    artists: Optional[List[str]] = Field(alias="xesam:artist")
-    title: Optional[str] = Field(alias="xesam:title")
-    track_number: Optional[int] = Field(alias="xesam:trackNumber")
-    url: Optional[str] = Field(alias="xesam:url")
+    track_id: str | None = Field(alias="mpris:trackid", default=None)
+    art_url: str | None = Field(alias="mpris:artUrl", default=None)
+    album: str | None = Field(alias="xesam:album", default=None)
+    artists: List[str] | None = Field(alias="xesam:artist", default=None)
+    title: str | None = Field(alias="xesam:title", default=None)
+    track_number: int | None = Field(alias="xesam:trackNumber", default=None)
+    url: str | None = Field(alias="xesam:url", default=None)
 
 
 class Screen(BaseModel):
@@ -29,13 +29,13 @@ class Screen(BaseModel):
     height: int = 768
 
 
-class Context:  # noqa: WPS230
+class Context:
     """music_bg context object."""
 
     def __init__(
         self,
-        config_path: Optional[Path] = None,
-        reloadable: Optional[bool] = None,
+        config_path: Path | None = None,
+        reloadable: bool | None = None,
     ):
         """
         Method used to initialize class.
@@ -54,7 +54,7 @@ class Context:  # noqa: WPS230
         self.last_status = ""
         self.screen = Screen()
         self.metdata = Metadata()
-        self.src_image = None
+        self.src_image: Image | None = None
         self.processors_map: Dict[str, Callable[..., Image]] = {}
         self.variables_providers: Dict[str, Callable[..., Any]] = {
             "screen": Context.get_screen_size,
@@ -84,6 +84,7 @@ class Context:  # noqa: WPS230
         try:
             run_result = subprocess.run(  # noqa: S603
                 ["/bin/sh", "-c", self.config.screen_resolution_command],
+                check=False,
                 stdout=subprocess.PIPE,
             )
             run_result.check_returncode()
@@ -104,13 +105,13 @@ class Context:  # noqa: WPS230
 
     def reload_processors(self) -> None:
         """Find and load in memory all image processors."""
-        for entrypoint in entrypoints.get_group_all("mbg_processors"):
+        for entrypoint in EntryPoints().select(group="mbg_processors"):
             processor_func = entrypoint.load()
             self.processors_map[entrypoint.name] = processor_func
 
     def reload_variables_providers(self) -> None:
         """Find and load in memory all variables providers."""
-        for entrypoint in entrypoints.get_group_all("mbg_variables"):
+        for entrypoint in EntryPoints().select(group="mbg_variables"):
             variable_func = entrypoint.load()
             self.variables_providers[entrypoint.name] = variable_func
 

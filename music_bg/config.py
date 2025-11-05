@@ -24,7 +24,7 @@ class Layer(BaseModel):
 class LogLevel(enum.Enum):
     """Possible log levels."""
 
-    INFO = "INFO"  # noqa: WPS110
+    INFO = "INFO"
     ERROR = "ERROR"
     DEBUG = "DEBUG"
 
@@ -42,7 +42,7 @@ class Config(BaseModel):
     layers: List[Layer] = []
 
     @classmethod
-    def get_serde_by_extension(  # noqa: WPS234
+    def get_serde_by_extension(
         cls,
         ext: str,
     ) -> Iterable[Callable[..., Dict[str, Any]]]:

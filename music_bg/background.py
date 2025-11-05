@@ -15,7 +15,7 @@ def set_background(filename: str, context: Context) -> None:
     logger.debug("Setting background")
     command = context.config.set_command.format(filename)
     try:
-        subprocess.run(["/bin/sh", "-c", command]).check_returncode()  # noqa: S603
+        subprocess.run(["/bin/sh", "-c", command], check=False).check_returncode()  # noqa: S603
     except subprocess.CalledProcessError as exc:
         logger.exception(exc)
 
@@ -29,6 +29,6 @@ def reset_background(context: Context) -> None:
     logger.debug("Reseting background")
     command = context.config.reset_command
     try:
-        subprocess.run(["/bin/sh", "-c", command]).check_returncode()  # noqa: S603
+        subprocess.run(["/bin/sh", "-c", command], check=False).check_returncode()  # noqa: S603
     except subprocess.CalledProcessError as exc:
         logger.exception(exc)

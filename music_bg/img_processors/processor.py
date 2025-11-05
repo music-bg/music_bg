@@ -9,7 +9,7 @@ from music_bg.config import Layer
 from music_bg.context import Context
 
 
-def process_layer(  # noqa: WPS210
+def process_layer(
     image: Image.Image,
     context: Context,
     layer: Layer,
@@ -48,7 +48,7 @@ def process_layer(  # noqa: WPS210
     return layer.name, image
 
 
-def process_image(  # noqa: WPS210
+def process_image(
     image: Image.Image,
     context: Context,
 ) -> Optional[Image.Image]:  # : WPS210

@@ -1,30 +1,25 @@
 name: Release package
 
 on:
-  workflow_run:
-    workflows: [ "Testing package" ]
-    branches: [ master ]
+  release:
     types:
-      - completed
+      - released
+
 jobs:
   release:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-    - name: Install python dependencies 👨🏻‍💻
-      run: |
-        sudo apt-get install -y build-essential libdbus-glib-1-dev libgirepository1.0-dev
-        pip install -U pip
-        pip install poetry
-        poetry install
-      env:
-        POETRY_VIRTUALENVS_CREATE: false
-    - name: Release package
-      env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
-      run: poetry publish --build
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v7
+      - name: Release package
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          uv version "${{ github.ref_name }}"
+          uv build
+          uv publish

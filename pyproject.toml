@@ -1,59 +1,55 @@
-[tool.poetry]
+[project]
 name = "music_bg"
 version = "0.2.1"
 description = "Dynamic wallpapers with power of mpris2."
-authors = ["Pavel Kirilin <win10@list.ru>"]
+authors = [{ name = "Pavel Kirilin", email = "s3riussan@gmail.com" }]
+requires-python = "~=3.13"
 readme = "README.md"
-repository = "https://github.com/music-bg/music_bg/"
-homepage = "https://github.com/music-bg/music_bg/wiki"
-documentation = "https://github.com/music-bg/music_bg/wiki"
-keywords = [
-  "Music",
-  "Dbus",
-  "Image Processing",
-  "Music Background",
-  "Mpris2"
-]
+keywords = ["Music", "Dbus", "Image Processing", "Music Background", "Mpris2"]
 classifiers = [
-  "Operating System :: POSIX :: Linux",
-  "Topic :: Scientific/Engineering :: Image Processing",
-  "Topic :: Multimedia :: Sound/Audio",
-  "Typing :: Typed"
+	"Operating System :: POSIX :: Linux",
+	"Topic :: Scientific/Engineering :: Image Processing",
+	"Topic :: Multimedia :: Sound/Audio",
+	"Typing :: Typed",
+]
+dependencies = [
+	"dbus-python>=1.2.16,<2",
+	"PyGObject>=3.40.1,<4",
+	"loguru>=0.5.3,<0.6",
+	"requests>=2.26.0,<3",
+	"pydantic>=1.8.2,<2",
+	"Pillow>=12.0.0,<13",
+	"toml>=0.10.2",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-dbus-python = "^1.2.16"
-PyGObject = "^3.40.1"
-loguru = "^0.5.3"
-requests = "^2.26.0"
-pydantic = "^1.8.2"
-toml = "^0.10.2"
-entrypoints = "^0.3"
-Pillow-SIMD = "^7.0.0"
+[project.urls]
+Homepage = "https://github.com/music-bg/music_bg/wiki"
+Repository = "https://github.com/music-bg/music_bg/"
+Documentation = "https://github.com/music-bg/music_bg/wiki"
 
-[tool.poetry.dev-dependencies]
-flake8 = "^3.9.2"
-mypy = "^0.910"
-isort = "^5.9.3"
-yesqa = "^1.2.3"
-pytest = "^6.2.5"
-wemake-python-styleguide = "^0.15.3"
-black = "^21.9b0"
-pre-commit = "^2.15.0"
-autoflake = "^1.4"
-types-requests = "^2.25.6"
-types-toml = "^0.1.5"
-
-[tool.poetry.scripts]
+[project.scripts]
 music_bg = "music_bg.__main__:main"
 
-[tool.poetry.plugins.mbg_processors]
+[project.entry-points.mbg_processors]
 fit = "music_bg.img_processors.fit:fit"
 noop = "music_bg.img_processors.noop:noop"
 resize = "music_bg.img_processors.resize:resize"
 load_img = "music_bg.img_processors.load_img:load_img"
 blank_image = "music_bg.img_processors.blank_img:blank_image"
+
+[dependency-groups]
+dev = [
+	"mypy>=1,<2",
+	"pytest>=8,<9",
+	"pre-commit>=4,<5",
+	"ruff>=0.14.3,<1",
+	"types-requests>=2.32.4.20250913",
+	"types-toml>=0.10.8.20240310",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.isort]
 profile = "black"
@@ -69,6 +65,80 @@ show_error_codes = true
 implicit_reexport = true
 allow_untyped_decorators = true
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+log_level = 'INFO'
+anyio_mode = "auto"
+
+[tool.ruff]
+target-version = "py39"
+# List of enabled rulsets.
+# See https://docs.astral.sh/ruff/rules/ for more information.
+lint.select = [
+	"E",     # Error
+	"F",     # Pyflakes
+	"W",     # Pycodestyle
+	"C90",   # McCabe complexity
+	"I",     # Isort
+	"N",     # pep8-naming
+	"D",     # Pydocstyle
+	"ANN",   # Pytype annotations
+	"S",     # Bandit
+	"B",     # Bugbear
+	"COM",   # Commas
+	"C4",    # Comprehensions
+	"ISC",   # Implicit string concat
+	"PIE",   # Unnecessary code
+	"T20",   # Catch prints
+	"PYI",   # validate pyi files
+	"Q",     # Checks for quotes
+	"RSE",   # Checks raise statements
+	"RET",   # Checks return statements
+	"SLF",   # Self checks
+	"SIM",   # Simplificator
+	"PTH",   # Pathlib checks
+	"ERA",   # Checks for commented out code
+	"PL",    # PyLint checks
+	"RUF",   # Specific to Ruff checks
+	"FA102", # Future annotations
+]
+lint.ignore = [
+	"D105",    # Missing docstring in magic method
+	"D107",    # Missing docstring in __init__
+	"D212",    # Multi-line docstring summary should start at the first line
+	"D401",    # First line should be in imperative mood
+	"D104",    # Missing docstring in public package
+	"D100",    # Missing docstring in public module
+	"ANN401",  # typing.Any are disallowed in `**kwargs
+	"PLR0913", # Too many arguments for function call
+	"D106",    # Missing docstring in public nested class
+]
+lint.mccabe = { max-complexity = 10 }
+exclude = [".venv/"]
+line-length = 88
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+	"S101",   # Use of assert detected
+	"S301",   # Use of pickle detected
+	"D103",   # Missing docstring in public function
+	"SLF001", # Private member accessed
+	"S311",   # Standard pseudo-random generators are not suitable for security/cryptographic purposes
+	"D101",   # Missing docstring in public class
+	"D102",   # Missing docstring in public method
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+ignore-decorators = ["typing.overload"]
+
+[tool.ruff.lint.pylint]
+allow-magic-value-types = ["int", "str", "float"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["taskiq_dependencies.Depends", "taskiq.TaskiqDepends"]
+
+[tool.typos.files]
+extend-exclude = [
+	"docs/README.md", # because of identifier in head section
+]

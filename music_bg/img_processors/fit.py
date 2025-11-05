@@ -3,7 +3,7 @@ from typing import Union
 from PIL.Image import Image
 
 
-def fit(  # noqa: WPS210
+def fit(
     image: Image,
     width: Union[str, int],
     height: Union[str, int],
