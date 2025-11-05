@@ -21,20 +21,15 @@ def guard_metadata(context: Context, player_args: Dict[str, Any]) -> Optional[Me
     :param player_args: arguents passed to dbus.
     :returns: metadata.
     """
-    status = player_args.get("PlaybackStatus")
     raw_meta = player_args.get("Metadata")
     if raw_meta is None:
         return None
     metadata = Metadata(**raw_meta)
-    if (
-        str(metadata.track_id) == str(context.metdata.track_id)
-        and str(status) == context.last_status
-    ):
+    if str(metadata.track_id) == str(context.metdata.track_id):
         return None
     if metadata.art_url is None:
         logger.debug("Can't get art_url")
         return None
-    context.last_status = str(status)
     context.metdata = metadata
     return metadata
 
@@ -67,10 +62,12 @@ def player_signal_handler(
         """
         status = player_args.get("PlaybackStatus")
         metadata = guard_metadata(context, player_args)
-        if metadata is None:
-            return
-        if status != "Playing":
+        if status:
+            context.last_status = str(status)
+        if str(context.last_status).lower() != "playing":
             reset_background(context)
+            return
+        if metadata is None:
             return
         logger.debug(f"Requesting {metadata.art_url}")
         response = requests.get(str(metadata.art_url), stream=True, timeout=5)

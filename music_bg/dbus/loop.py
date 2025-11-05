@@ -20,7 +20,7 @@ def run_loop(context: Context) -> None:
         player_signal_handler(context),
         dbus_interface="org.freedesktop.DBus.Properties",
         path="/org/mpris/MediaPlayer2",
-        interface_keyword="dbus_interface",
+        interface_keyword="org.freedesktop.DBus.Properti",
         arg0="org.mpris.MediaPlayer2.Player",
     )
     bus.add_signal_receiver(

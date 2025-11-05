@@ -32,9 +32,6 @@ You can install plugins and write your own configurations.
 To install this project simply run:
 ```bash
 pip install music_bg
-# Also you can install extra processors
-# by running
-pip install music_bg_extra
 ```
 
 That's it. Now you can read our [wiki](https://github.com/music-bg/music_bg/wiki)

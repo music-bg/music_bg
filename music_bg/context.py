@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import subprocess
-from importlib.metadata import EntryPoints
+from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Any, Callable, Dict, List
 
@@ -107,13 +107,13 @@ class Context:
 
     def reload_processors(self) -> None:
         """Find and load in memory all image processors."""
-        for entrypoint in EntryPoints().select(group="mbg_processors"):
+        for entrypoint in entry_points(group="mbg_processors"):
             processor_func = entrypoint.load()
             self.processors_map[entrypoint.name] = processor_func
 
     def reload_variables_providers(self) -> None:
         """Find and load in memory all variables providers."""
-        for entrypoint in EntryPoints().select(group="mbg_variables"):
+        for entrypoint in entry_points(group="mbg_variables"):
             variable_func = entrypoint.load()
             self.variables_providers[entrypoint.name] = variable_func
 
