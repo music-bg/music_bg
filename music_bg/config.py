@@ -79,7 +79,7 @@ class Config(BaseModel):
 
         _, des = cls.get_serde_by_extension(extension)
 
-        with open(config_path, "r") as config_io:
+        with Path(config_path).open("r") as config_io:
             deserialized = des(config_io)
         return cls(**deserialized)
 
@@ -92,5 +92,5 @@ class Config(BaseModel):
 
         ser, _ = self.get_serde_by_extension(extension)
 
-        with open(config_path, "w") as config_io:
+        with Path(config_path).open("w") as config_io:
             ser(self.dict(exclude={"log_level"}), config_io)

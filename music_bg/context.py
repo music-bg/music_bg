@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import subprocess
 from importlib.metadata import EntryPoints
 from pathlib import Path
@@ -36,7 +38,7 @@ class Context:
         self,
         config_path: Path | None = None,
         reloadable: bool | None = None,
-    ):
+    ) -> None:
         """
         Method used to initialize class.
 
@@ -88,15 +90,15 @@ class Context:
                 stdout=subprocess.PIPE,
             )
             run_result.check_returncode()
-        except subprocess.CalledProcessError:
-            raise ValueError("Can't read screen resolution.")
+        except subprocess.CalledProcessError as err:
+            raise ValueError("Can't read screen resolution.") from err
 
         resolution = run_result.stdout.decode().strip()
         logger.debug(f"Found resolution: {resolution}")
         try:
             width, height = map(int, resolution.split("x"))
-        except ValueError:
-            raise ValueError(f"Invalid resolution format: '{resolution}'.")
+        except ValueError as err:
+            raise ValueError(f"Invalid resolution format: '{resolution}'.") from err
 
         self.screen = Screen(
             width=width,
