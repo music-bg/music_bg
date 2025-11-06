@@ -13,7 +13,14 @@ def set_background(filename: str, context: Context) -> None:
     :param context: current mbg context.
     """
     logger.debug("Setting background")
-    command = context.config.set_command.format(filename)
+    command = context.config.set_command.format_map(
+        {
+            "0": filename,  # for backward compatibility
+            "out": filename,
+            "output": filename,
+            **context.variables,
+        },
+    )
     try:
         subprocess.run(["/bin/sh", "-c", command], check=False).check_returncode()  # noqa: S603
     except subprocess.CalledProcessError as exc:

@@ -17,7 +17,7 @@ def parse_args() -> Namespace:
     parser.add_argument(
         "-c",
         "--config",
-        help="Path to the configuration file",
+        help="Path to the configuration file JSON or TOML",
         default=xdg_config_home() / ".mbg.json",
         type=Path,
         dest="config_path",

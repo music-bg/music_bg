@@ -39,7 +39,7 @@ def process_layer(
         arguments = {}
         for arg, arg_value in processor.args.items():
             try:
-                arguments[arg] = str(arg_value).format_map(context.variables())
+                arguments[arg] = str(arg_value).format_map(context.variables)
             except KeyError as kerr:
                 raise ValueError(f'Unknown variable "{{{kerr.args[0]}}}"') from kerr
 

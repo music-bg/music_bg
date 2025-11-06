@@ -25,12 +25,11 @@ def guard_metadata(context: Context, player_args: Dict[str, Any]) -> Optional[Me
     if raw_meta is None:
         return None
     metadata = Metadata(**raw_meta)
-    if str(metadata.track_id) == str(context.metdata.track_id):
+    if str(metadata.track_id) == str(context.metadata.track_id):
         return None
     if metadata.art_url is None:
         logger.debug("Can't get art_url")
         return None
-    context.metdata = metadata
     return metadata
 
 
@@ -62,15 +61,24 @@ def player_signal_handler(
         """
         status = player_args.get("PlaybackStatus")
         metadata = guard_metadata(context, player_args)
+
         if status:
-            context.last_status = str(status)
-        if str(context.last_status).lower() != "playing":
+            context.last_status = str(status).lower()
+
+        if metadata:
+            context.metadata = metadata
+
+        if context.last_status != "playing":
+            logger.info("Resetting background")
             reset_background(context)
             return
-        if metadata is None:
+
+        if not context.metadata.art_url:
+            logger.warning("No art url")
             return
-        logger.debug(f"Requesting {metadata.art_url}")
-        response = requests.get(str(metadata.art_url), stream=True, timeout=5)
+
+        logger.debug(f"Requesting {context.metadata.art_url}")
+        response = requests.get(context.metadata.art_url, stream=True, timeout=5)
         if not response.ok:
             logger.debug(f"Image response returned status {response.status_code}")
             return
@@ -79,9 +87,12 @@ def player_signal_handler(
         if context.reloadable:
             context.reload()
 
+
         image = Image.open(response.raw).convert("RGBA")  # type: ignore
         context.src_image = image.copy()
+        context.update_variables()
         processed = process_image(image, context)
+        context.previous_image = processed
         if processed is not None:
             with NamedTemporaryFile(mode="wb", delete=True) as temp_file:
                 processed.save(temp_file, format="png")

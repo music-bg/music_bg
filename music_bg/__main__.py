@@ -6,6 +6,7 @@ from loguru import logger
 from PIL.Image import Image
 
 from music_bg.argparse import parse_args
+from music_bg.background import reset_background
 from music_bg.config import Config
 from music_bg.context import Context
 from music_bg.dbus.loop import run_loop
@@ -127,6 +128,7 @@ def main() -> None:
         run_loop(context)
     except KeyboardInterrupt:
         logger.info("Goodbye!")
+        reset_background(context)
 
 
 if __name__ == "__main__":

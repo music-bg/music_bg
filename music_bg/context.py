@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import subprocess
+from functools import cached_property, lru_cache
 from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Any, Callable, Dict, List
@@ -55,9 +56,11 @@ class Context:
         self.reloadable = reloadable or False
         self.last_status = ""
         self.screen = Screen()
-        self.metdata = Metadata()
+        self.metadata = Metadata()
         self.src_image: Image | None = None
+        self.previous_image: Image | None = None
         self.processors_map: Dict[str, Callable[..., Image]] = {}
+        self.variables: Dict[str, Any] = {}
         self.variables_providers: Dict[str, Callable[..., Any]] = {
             "screen": Context.get_screen_size,
             "metadata": Context.get_metadata,
@@ -152,14 +155,14 @@ class Context:
 
         :return: metadata info.
         """
-        return self.metdata
+        return self.metadata
 
-    def variables(self) -> Dict[str, Any]:
+    def update_variables(self) -> None:
         """
         Get variables mapping.
 
         :return: mapping with variables.
         """
-        return {
+        self.variables = {
             name: var_proc(self) for name, var_proc in self.variables_providers.items()
         }

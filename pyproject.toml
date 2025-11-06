@@ -17,10 +17,11 @@ dependencies = [
 	"PyGObject>=3.40.1,<4",
 	"loguru>=0.5.3,<0.6",
 	"requests>=2.26.0,<3",
-	"pydantic>=1.8.2,<2",
+	"pydantic>=2,<3",
 	"Pillow>=12.0.0,<13",
 	"toml>=0.10.2",
 	"numpy>=2.3.4",
+	"scikit-learn>=1.7.2",
 ]
 
 [project.urls]
@@ -48,7 +49,11 @@ radial_gradient = "music_bg.img_processors.gradients:radial_gradient"
 uuid4 = "music_bg.img_variables.uuid_gen:uuid4"
 most_frequent_color = "music_bg.img_variables.colors:most_frequent_color_var"
 most_frequent_color_inverted = "music_bg.img_variables.colors:most_frequent_color_inverted_var"
-least_frequent_color = "music_bg.img_variables.colors:most_frequent_color_inverted_var"
+least_frequent_color = "music_bg.img_variables.colors:least_frequent_color_var"
+accent_color = "music_bg.img_variables.colors:accent_color_var"
+accent_color_inverted = "music_bg.img_variables.colors:accent_color_inv_var"
+second_accent_color = "music_bg.img_variables.colors:second_accent_color_var"
+second_accent_color_inverted = "music_bg.img_variables.colors:second_accent_color_inv_var"
 
 [dependency-groups]
 dev = [

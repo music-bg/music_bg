@@ -1,7 +1,7 @@
 import enum
 import json
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, List, Optional, Union
+from typing import Any, Callable, Dict, Iterable, List, Union
 
 import toml
 from pydantic import BaseModel
@@ -11,7 +11,7 @@ class ImageProcessor(BaseModel):
     """Image processor config."""
 
     name: str
-    args: Optional[Dict[str, Any]]
+    args: dict[str, Any] | None = None
 
 
 class Layer(BaseModel):
@@ -32,14 +32,14 @@ class LogLevel(enum.Enum):
 class Config(BaseModel):
     """User configuration object."""
 
-    blender: List[Union[str, int]] = []
+    blender: list[str | int] = []
     log_level: LogLevel = LogLevel.INFO
 
     set_command: str = 'feh --bg-fill "{0}"'
     reset_command: str = "nitrogen --restore"
 
     screen_resolution_command: str = "xrandr | grep '*' | cut -d' ' -f4 | sort --human-numeric-sort --reverse | head -n 1"  # noqa: E501
-    layers: List[Layer] = []
+    layers: list[Layer] = []
 
     @classmethod
     def get_serde_by_extension(
@@ -93,4 +93,4 @@ class Config(BaseModel):
         ser, _ = self.get_serde_by_extension(extension)
 
         with Path(config_path).open("w") as config_io:
-            ser(self.dict(exclude={"log_level"}), config_io)
+            ser(self.model_dump_json(exclude={"log_level"}), config_io)
