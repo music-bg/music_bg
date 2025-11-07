@@ -13,8 +13,8 @@ classifiers = [
 	"Typing :: Typed",
 ]
 dependencies = [
-	"dbus-python>=1.2.16,<2",
-	"PyGObject>=3.40.1,<4",
+	"dbus-python>=1.2.16,<2; sys_platform == 'linux'",
+	"PyGObject>=3.40.1,<4; sys_platform == 'linux'",
 	"loguru>=0.5.3,<0.6",
 	"requests>=2.26.0,<3",
 	"pydantic>=2,<3",
