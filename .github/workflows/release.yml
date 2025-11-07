@@ -16,8 +16,8 @@ jobs:
           python-version: "3.14"
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v7
-      - name: Install cario
-        run: apt install -y libcairo2-dev pkg-config
+      - name: Install deps
+        run: sudo apt-get install -y libcairo2-dev pkg-config libdbus-1-dev
       - name: Release package
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
