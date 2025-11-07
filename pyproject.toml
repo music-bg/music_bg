@@ -3,7 +3,7 @@ name = "music_bg"
 version = "0.2.1"
 description = "Dynamic wallpapers with power of mpris2."
 authors = [{ name = "Pavel Kirilin", email = "s3riussan@gmail.com" }]
-requires-python = "~=3.13"
+requires-python = "~=3.11"
 readme = "README.md"
 keywords = ["Music", "Dbus", "Image Processing", "Music Background", "Mpris2"]
 classifiers = [
