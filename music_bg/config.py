@@ -35,7 +35,7 @@ class Config(BaseModel):
     blender: list[Union[str, int]] = []
     log_level: LogLevel = LogLevel.INFO
 
-    set_command: str = 'feh --bg-fill "{0}"'
+    set_command: str = 'feh --bg-fill "{out}"'
     reset_command: str = "nitrogen --restore"
 
     layers: list[Layer] = []

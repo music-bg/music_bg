@@ -48,7 +48,7 @@ radial_gradient = "music_bg.img_processors.gradients:radial_gradient"
 
 [project.entry-points.mbg_variables]
 uuid4 = "music_bg.img_variables.uuid_gen:uuid4"
-color_variables = "music_bg.img_variables.colors:setup_colors_vars"
+colors = "music_bg.img_variables.colors:colors_var"
 
 [dependency-groups]
 dev = [

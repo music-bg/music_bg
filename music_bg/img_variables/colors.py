@@ -41,18 +41,16 @@ class ColorsVars:
         )
 
 
-def setup_colors_vars(context: Context) -> dict[str, str]:
+def colors_var(context: Context) -> ColorsVars:
     """Setup color-related variables."""
     if context.src_image is None:
-        return asdict(ColorsVars())
+        return ColorsVars()
 
     mf_color = color_to_hexstr(most_frequent_color(context.src_image.copy()))
     bg_accent, fg_accent = get_contrasting_accent_colors(context.src_image.copy(), 4)
 
-    return asdict(
-        ColorsVars(
-            most_frequent_color=mf_color,
-            accent_color=color_to_hexstr(fg_accent),
-            second_accent_color=color_to_hexstr(bg_accent),
-        ),
+    return ColorsVars(
+        most_frequent_color=mf_color,
+        accent_color=color_to_hexstr(fg_accent),
+        second_accent_color=color_to_hexstr(bg_accent),
     )

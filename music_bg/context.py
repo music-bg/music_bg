@@ -58,13 +58,14 @@ class Context:
         self.processors_map: Dict[str, Callable[..., Image]] = {}
         self.variables: Dict[str, Any] = {}
         self.variables_providers: Dict[str, Callable[..., Any]] = {
-            "default_vars": Context.get_default_variables,
+            "screen": Context.get_screen,
+            "metadata": Context.get_metadata,
         }
         self.reload()
 
-    def get_default_variables(self) -> dict[str, Any]:
-        """Get default variables."""
-        return {"screen": self.screen, "metadata": self.metadata}
+    def get_screen(self) -> Screen:
+        """Get screen var provider."""
+        return self.screen
 
     def reload(self) -> None:
         """Perform full context reload."""
@@ -152,6 +153,7 @@ class Context:
         :return: mapping with variables.
         """
         self.variables.clear()
-        for name, var_proc in self.variables_providers.items():
-            logger.debug(f"Updating {name} variable")
-            self.variables.update(var_proc(self))
+        for name, var_func in self.variables_providers.items():
+            value = var_func(self)
+            logger.debug(f"VAR '{name}' = {value}")
+            self.variables[name] = value
