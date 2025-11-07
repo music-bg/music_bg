@@ -13,6 +13,8 @@ jobs:
           python-version: "3.14"
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v7
+      - name: Install deps
+        run: apt install -y libcairo2-dev pkg-config libdbus-1-dev
       - name: Run pre-commit check
         run: |
           uv sync --locked
