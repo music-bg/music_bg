@@ -47,13 +47,7 @@ radial_gradient = "music_bg.img_processors.gradients:radial_gradient"
 
 [project.entry-points.mbg_variables]
 uuid4 = "music_bg.img_variables.uuid_gen:uuid4"
-most_frequent_color = "music_bg.img_variables.colors:most_frequent_color_var"
-most_frequent_color_inverted = "music_bg.img_variables.colors:most_frequent_color_inverted_var"
-least_frequent_color = "music_bg.img_variables.colors:least_frequent_color_var"
-accent_color = "music_bg.img_variables.colors:accent_color_var"
-accent_color_inverted = "music_bg.img_variables.colors:accent_color_inv_var"
-second_accent_color = "music_bg.img_variables.colors:second_accent_color_var"
-second_accent_color_inverted = "music_bg.img_variables.colors:second_accent_color_inv_var"
+color_variables = "music_bg.img_variables.colors:setup_colors_vars"
 
 [dependency-groups]
 dev = [

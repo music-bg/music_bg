@@ -1,84 +1,58 @@
+from dataclasses import asdict, dataclass, field
+
 from music_bg.context import Context
 from music_bg.utils import (
+    color_to_hexstr,
     colorstr_to_tuple,
-    get_accent_colors,
     get_contrasting_accent_colors,
+    invert_color,
     most_frequent_color,
 )
 
 
-def most_frequent_color_var(context: Context) -> str:
-    """
-    The most frequent color of an album cover.
+@dataclass
+class ColorsVars:
+    """All available color-related vars."""
 
-    returns color in format like "#FFFFFF".
+    least_frequent_color: str = "#000000"
+    least_frequent_color_inverted: str = field(init=False)
 
-    :param context: current context.
-    :return: hex color.
-    """
+    accent_color: str = "#FFFFFF"
+    accent_color_inverted: str = field(init=False)
+
+    second_accent_color: str = "#000000"
+    second_accent_color_inverted: str = field(init=False)
+
+    most_frequent_color: str = "#FFFFFF"
+    most_frequent_color_inverted: str = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.accent_color_inverted = color_to_hexstr(
+            invert_color(colorstr_to_tuple(self.accent_color)),
+        )
+        self.second_accent_color_inverted = color_to_hexstr(
+            invert_color(colorstr_to_tuple(self.second_accent_color)),
+        )
+        self.most_frequent_color_inverted = color_to_hexstr(
+            invert_color(colorstr_to_tuple(self.most_frequent_color)),
+        )
+        self.least_frequent_color_inverted = color_to_hexstr(
+            invert_color(colorstr_to_tuple(self.least_frequent_color)),
+        )
+
+
+def setup_colors_vars(context: Context) -> dict[str, str]:
+    """Setup color-related variables."""
     if context.src_image is None:
-        return "#000000"
-    dominant_color = most_frequent_color(context.src_image.copy())
-    return "#%02X%02X%02X" % dominant_color
+        return asdict(ColorsVars())
 
+    mf_color = color_to_hexstr(most_frequent_color(context.src_image.copy()))
+    bg_accent, fg_accent = get_contrasting_accent_colors(context.src_image.copy(), 4)
 
-def most_frequent_color_inverted_var(context: Context) -> str:
-    """
-    The most frequent color of an album cover.
-
-    returns color in format like "#FFFFFF".
-
-    :param context: current context.
-    :return: hex color.
-    """
-    if context.src_image is None:
-        return "#000000"
-    red, green, blue = most_frequent_color(context.src_image.copy())
-    return "#%02X%02X%02X" % (
-        255 - red,
-        255 - green,
-        255 - blue,
-    )
-
-
-def accent_color_var(context: Context) -> str:
-    if context.src_image is None:
-        return "#000000"
-    _, fg = get_contrasting_accent_colors(context.src_image, 2)
-    return "#%02X%02X%02X" % fg
-
-
-def accent_color_inv_var(context: Context) -> str:
-    r, g, b = colorstr_to_tuple(accent_color_var(context))
-    return "#%02X%02X%02X" % (255 - r, 255 - g, 255 - b)
-
-
-def second_accent_color_var(context: Context) -> str:
-    if context.src_image is None:
-        return "#000000"
-    bg, _ = get_contrasting_accent_colors(context.src_image, 2)
-    return "#%02X%02X%02X" % bg
-
-
-def second_accent_color_inv_var(context: Context) -> str:
-    r, g, b = colorstr_to_tuple(second_accent_color_var(context))
-    return "#%02X%02X%02X" % (255 - r, 255 - g, 255 - b)
-
-
-def least_frequent_color_var(context: Context) -> str:
-    """
-    The most frequent color of an album cover.
-
-    returns color in format like "#FFFFFF".
-
-    :param context: current context.
-    :return: hex color.
-    """
-    if context.src_image is None:
-        return "#000000"
-    red, green, blue = most_frequent_color(context.src_image.copy())
-    return "#%02X%02X%02X" % (
-        255 - red,
-        255 - green,
-        255 - blue,
+    return asdict(
+        ColorsVars(
+            most_frequent_color=mf_color,
+            accent_color=color_to_hexstr(fg_accent),
+            second_accent_color=color_to_hexstr(bg_accent),
+        ),
     )

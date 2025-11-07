@@ -47,9 +47,9 @@ def get_accent_colors(
     image: Image.Image,
     num_colors: int = 5,
 ) -> list[Tuple[int, int, int]]:
+    """Get accent colors."""
     image.thumbnail((100, 100))
     image = image.convert("RGB")
-    print("AAA")
 
     img_np = np.array(image).reshape((-1, 3))
     kmeans = KMeans(n_clusters=num_colors, init="k-means++", n_init=10, random_state=42)
@@ -69,7 +69,7 @@ def luminance(color: Tuple[int, int, int]) -> float:
     """
     red, green, blue = color
     # Using the Rec. 709 formula for luminance
-    # return 0.299 * red + 0.587 * green + 0.114 * blue
+    # return 0.299 * red + 0.587 * green + 0.114 * blue  # noqa: ERA001
     return 0.2126 * red + 0.7152 * green + 0.0722 * blue
 
 
@@ -109,8 +109,6 @@ def get_contrasting_accent_colors(
     fg = accent_colors[0]
     bg = (255 - fg[0], 255 - fg[1], 255 - fg[1])  # Default to inversed fg
     for color in accent_colors[1:]:
-        print(contrast_ratio(color, fg))
-    for color in accent_colors[1:]:
         if contrast_ratio(color, fg) >= min_contrast_ratio:
             bg = color
             break
@@ -134,3 +132,13 @@ def colorstr_to_tuple(color: str) -> Tuple[int, int, int]:
     blue = int(color_hex[4:], base=16)
 
     return red, green, blue
+
+
+def invert_color(color: Tuple[int, int, int]) -> Tuple[int, int, int]:
+    """Find the inverted color."""
+    return (255 - color[0], 255 - color[1], 255 - color[2])
+
+
+def color_to_hexstr(clr: Tuple[int, int, int]) -> str:
+    """Convert a color tuple to an hex string."""
+    return "#%02X%02X%02X" % clr

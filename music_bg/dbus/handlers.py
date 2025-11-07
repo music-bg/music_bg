@@ -87,7 +87,6 @@ def player_signal_handler(
         if context.reloadable:
             context.reload()
 
-
         image = Image.open(response.raw).convert("RGBA")  # type: ignore
         context.src_image = image.copy()
         context.update_variables()

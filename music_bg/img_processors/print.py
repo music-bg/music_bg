@@ -2,7 +2,7 @@ from typing import Optional, Union
 
 from PIL import Image, ImageDraw, ImageFont
 
-from music_bg.utils import most_frequent_color
+from music_bg.utils import color_to_hexstr, invert_color, most_frequent_color
 
 
 def img_print(
@@ -44,8 +44,7 @@ def img_print(
         start_y = int((image.height - text_h) // 2)
 
     if color is None:
-        red, green, blue = most_frequent_color(image.copy())
-        color = (255 - red, 255 - green, 255 - blue)  # type: ignore
+        color = color_to_hexstr(invert_color(most_frequent_color(image.copy())))
 
     draw.text(
         xy=(int(start_x), int(start_y)),

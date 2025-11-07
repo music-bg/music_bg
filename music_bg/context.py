@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import subprocess
-from functools import cached_property, lru_cache
 from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Any, Callable, Dict, List
@@ -62,10 +61,13 @@ class Context:
         self.processors_map: Dict[str, Callable[..., Image]] = {}
         self.variables: Dict[str, Any] = {}
         self.variables_providers: Dict[str, Callable[..., Any]] = {
-            "screen": Context.get_screen_size,
-            "metadata": Context.get_metadata,
+            "default_vars": Context.get_default_variables,
         }
         self.reload()
+
+    def get_default_variables(self) -> dict[str, Any]:
+        """Get default variables."""
+        return {"screen": self.screen, "metadata": self.metadata}
 
     def reload(self) -> None:
         """Perform full context reload."""
@@ -163,6 +165,7 @@ class Context:
 
         :return: mapping with variables.
         """
-        self.variables = {
-            name: var_proc(self) for name, var_proc in self.variables_providers.items()
-        }
+        self.variables.clear()
+        for name, var_proc in self.variables_providers.items():
+            logger.debug(f"Updating {name} variable")
+            self.variables.update(var_proc(self))

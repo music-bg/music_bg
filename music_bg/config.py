@@ -11,7 +11,7 @@ class ImageProcessor(BaseModel):
     """Image processor config."""
 
     name: str
-    args: dict[str, Any] | None = None
+    args: Union[dict[str, Any], None] = None
 
 
 class Layer(BaseModel):
@@ -32,7 +32,7 @@ class LogLevel(enum.Enum):
 class Config(BaseModel):
     """User configuration object."""
 
-    blender: list[str | int] = []
+    blender: list[Union[str, int]] = []
     log_level: LogLevel = LogLevel.INFO
 
     set_command: str = 'feh --bg-fill "{0}"'
