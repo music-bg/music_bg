@@ -29,7 +29,7 @@ def generate_config(config_path: Path) -> None:
 def show_version() -> None:
     """Show installed version of a Music Background."""
     version = metadata.version("music_bg")
-    logger.info(f"Music background v{version}")
+    print(f"Music background v{version}")
 
 
 def print_processors(context: Context) -> None:
@@ -38,30 +38,30 @@ def print_processors(context: Context) -> None:
 
     :param context: music_bg context.
     """
-    logger.info(" Processors ".center(80, "#"))
+    print(" Processors ".center(80, "#"))
 
     for name, func in context.processors_map.items():
-        logger.info("-" * 80)
-        logger.info(f"name: {name}")
-        logger.info("type: processor")
+        print("-" * 80)
+        print(f"name: {name}")
+        print("type: processor")
         args = inspect.signature(func)
         custom_args = []
         for parameter in args.parameters.values():
             if parameter.annotation != Image:
                 custom_args.append(parameter)
         if custom_args:
-            logger.info(" args ".center(20, "="))
+            print(" args ".center(20, "="))
             for arg in custom_args:
                 arg_info = f"* {arg.name}"
                 if arg.annotation != arg.empty:
                     arg_info = f"{arg_info}: {arg.annotation}"
                 if arg.default == arg.empty:
                     arg_info = f"{arg_info} (required)"
-                logger.info(arg_info)
+                print(arg_info)
         doc = inspect.getdoc(func)
         if doc is not None:
-            logger.info(" doc ".center(20, "="))
-            logger.info(doc)
+            print(" doc ".center(20, "="))
+            print(doc)
 
 
 def print_variables(context: Context) -> None:
@@ -70,16 +70,13 @@ def print_variables(context: Context) -> None:
 
     :param context: current mbg context.
     """
-    logger.info(" Variables ".center(80, "#"))
+    print(" Variables ".center(80, "#"))
 
-    for name, func in context.variables_providers.items():
-        logger.info("-" * 80)
-        logger.info(f"name: {name}")
-        logger.info("type: variable")
-        doc = inspect.getdoc(func)
-        if doc is not None:
-            logger.info(" doc ".center(20, "="))
-            logger.info(doc)
+    context.update_variables()
+    for name, value in context.variables.items():
+        print("-" * 80)
+        print(f"name: {name}")
+        print(f"value: {value}")
 
 
 def show_info(
@@ -114,7 +111,7 @@ def main() -> None:
     if args.subparser_name == "gen":
         generate_config(args.config_path)
         return
-    context = Context(args.config_path, args.reload)
+    context = Context(args.config_path)
     if args.subparser_name == "info":
         show_info(
             context,

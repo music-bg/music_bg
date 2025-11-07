@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import subprocess
 from importlib.metadata import entry_points
 from pathlib import Path
 from typing import Any, Callable, Dict, List
 
+import screeninfo
 from loguru import logger
 from PIL.Image import Image
 from pydantic import BaseModel, Field
@@ -37,7 +37,6 @@ class Context:
     def __init__(
         self,
         config_path: Path | None = None,
-        reloadable: bool | None = None,
     ) -> None:
         """
         Method used to initialize class.
@@ -48,11 +47,9 @@ class Context:
         is called only once in __new__ method.
 
         :param config_path: path to the config.
-        :param reloadable: if config must be reloadable.
         """
         self.config_path = config_path or Path("~/.mbg.json")
         self.config = Config()
-        self.reloadable = reloadable or False
         self.last_status = ""
         self.screen = Screen()
         self.metadata = Metadata()
@@ -84,30 +81,19 @@ class Context:
         """
         Update biggest screen size.
 
-        :raises ValueError: if can't get screen size
-            or format is invalid.
+        :raises ValueError: if can't get screen size or format is invalid.
         """
         logger.debug("Updating screen resolution")
-        try:
-            run_result = subprocess.run(  # noqa: S603
-                ["/bin/sh", "-c", self.config.screen_resolution_command],
-                check=False,
-                stdout=subprocess.PIPE,
-            )
-            run_result.check_returncode()
-        except subprocess.CalledProcessError as err:
-            raise ValueError("Can't read screen resolution.") from err
-
-        resolution = run_result.stdout.decode().strip()
-        logger.debug(f"Found resolution: {resolution}")
-        try:
-            width, height = map(int, resolution.split("x"))
-        except ValueError as err:
-            raise ValueError(f"Invalid resolution format: '{resolution}'.") from err
+        # Sort screens by their areas
+        # and get the last one.
+        biggest_screen = sorted(
+            screeninfo.get_monitors(),
+            key=lambda m: m.width * m.height,
+        )[-1]
 
         self.screen = Screen(
-            width=width,
-            height=height,
+            width=biggest_screen.width,
+            height=biggest_screen.height,
         )
 
     def reload_processors(self) -> None:

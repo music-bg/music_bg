@@ -22,6 +22,7 @@ dependencies = [
 	"toml>=0.10.2",
 	"numpy>=2.3.4",
 	"scikit-learn>=1.7.2",
+	"screeninfo>=0.8.1",
 ]
 
 [project.urls]
@@ -139,6 +140,7 @@ line-length = 88
 	"D101",   # Missing docstring in public class
 	"D102",   # Missing docstring in public method
 ]
+"music_bg/__main__.py" = ["T201"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
@@ -146,9 +148,6 @@ ignore-decorators = ["typing.overload"]
 
 [tool.ruff.lint.pylint]
 allow-magic-value-types = ["int", "str", "float"]
-
-[tool.ruff.lint.flake8-bugbear]
-extend-immutable-calls = ["taskiq_dependencies.Depends", "taskiq.TaskiqDepends"]
 
 [tool.typos.files]
 extend-exclude = [

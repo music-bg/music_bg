@@ -38,7 +38,6 @@ class Config(BaseModel):
     set_command: str = 'feh --bg-fill "{0}"'
     reset_command: str = "nitrogen --restore"
 
-    screen_resolution_command: str = "xrandr | grep '*' | cut -d' ' -f4 | sort --human-numeric-sort --reverse | head -n 1"  # noqa: E501
     layers: list[Layer] = []
 
     @classmethod

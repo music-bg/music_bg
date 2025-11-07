@@ -82,10 +82,8 @@ def player_signal_handler(
         if not response.ok:
             logger.debug(f"Image response returned status {response.status_code}")
             return
-        context.reload_screen_size()
 
-        if context.reloadable:
-            context.reload()
+        context.reload()
 
         image = Image.open(response.raw).convert("RGBA")  # type: ignore
         context.src_image = image.copy()

@@ -31,14 +31,6 @@ def parse_args() -> Namespace:
         default=False,
     )
 
-    parser.add_argument(
-        "-r",
-        "--reload",
-        help="Reload configuration before setting background",
-        action="store_true",
-        default=False,
-    )
-
     subparsers = parser.add_subparsers(dest="subparser_name")
 
     gen_parser = subparsers.add_parser(
