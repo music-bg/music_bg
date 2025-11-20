@@ -25,10 +25,10 @@ def guard_metadata(context: Context, player_args: Dict[str, Any]) -> Optional[Me
     if raw_meta is None:
         return None
     metadata = Metadata(**raw_meta)
-    if str(metadata.track_id) == str(context.metadata.track_id):
-        return None
     if metadata.art_url is None:
         logger.debug("Can't get art_url")
+        return None
+    if str(metadata.art_url) == str(context.metadata.art_url):
         return None
     return metadata
 
