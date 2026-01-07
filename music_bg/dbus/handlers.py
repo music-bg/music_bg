@@ -1,4 +1,5 @@
-from tempfile import NamedTemporaryFile
+from pathlib import Path
+from tempfile import NamedTemporaryFile, gettempdir
 from typing import Any, Callable, Dict, Optional
 
 import requests
@@ -29,6 +30,8 @@ def guard_metadata(context: Context, player_args: Dict[str, Any]) -> Optional[Me
         logger.debug("Can't get art_url")
         return None
     if str(metadata.art_url) == str(context.metadata.art_url):
+        return None
+    if metadata.track_id == "/org/mpris/MediaPlayer2/TrackList/NoTrack":
         return None
     return metadata
 
@@ -91,7 +94,7 @@ def player_signal_handler(
         processed = process_image(image, context)
         context.previous_image = processed
         if processed is not None:
-            with NamedTemporaryFile(mode="wb", delete=True) as temp_file:
+            with (Path(gettempdir()) / "music_bg.png").open(mode="w+b") as temp_file:
                 processed.save(temp_file, format="png")
                 logger.debug(f"Background saved at {temp_file.name}")
                 set_background(temp_file.name, context)
